@@ -29,7 +29,7 @@ class SempaiTaxReportWizard(models.TransientModel):
             ('date_order', '>=', self.date_start),
             ('date_order', '<=', self.date_end),
             ('state', '=', 'done'),
-            ('state_tributacion', '=', 'aceptado'),
+#            ('state_tributacion', '=', 'aceptado'),
         ]).sorted(
             key=lambda order: (
                 order.partner_id.name or '',

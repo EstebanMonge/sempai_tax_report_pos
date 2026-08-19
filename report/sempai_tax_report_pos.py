@@ -33,6 +33,45 @@ class SempaiTaxReport(models.AbstractModel):
         )
 
         # ============================================================
+        # POS SALES TOTALS
+        # ============================================================
+
+
+        sales_subtotal = round(
+            sum(
+                order.amount_total - order.amount_tax
+                for order in pos_orders
+            ),
+            2
+        )
+
+
+        sales_tax = round(
+            sum(
+                order.amount_tax
+                for order in pos_orders
+            ),
+            2
+        )
+
+
+        sales_total = round(
+            sum(
+                order.amount_total
+                for order in pos_orders
+            ),
+            2
+        )
+
+
+        _logger.info(
+            'POS SALES TOTALS | Subtotal=%s | Tax=%s | Total=%s',
+            sales_subtotal,
+            sales_tax,
+            sales_total,
+        )
+
+        # ============================================================
         # POS TAX GROUP CALCULATION
         # ============================================================
 
@@ -177,6 +216,10 @@ class SempaiTaxReport(models.AbstractModel):
 
             'date_start': date_start,
             'date_end': date_end,
+
+            'sales_subtotal': sales_subtotal,
+            'sales_tax': sales_tax,
+            'sales_total': sales_total,
 
             'tax_groups': tax_groups,
         }
