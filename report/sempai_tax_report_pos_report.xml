@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report
+        id="action_sempai_tax_report_pos"
+        model="sempai.tax.report.pos.wizard"
+        string="Sempai Space POS Tax Report"
+        report_type="qweb-pdf"
+        name="sempai_tax_report_pos.sempai_tax_report_pos_document"
+        file="sempai_tax_report_pos.sempai_tax_report_pos_document"
+        print_report_name="'Sempai Space POS Tax Report'"
+    />
+
+</odoo>
