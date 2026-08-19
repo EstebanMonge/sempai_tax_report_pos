@@ -44,13 +44,12 @@
     <!-- WIZARD ACTION -->
     <!-- ============================================================ -->
 
-    <act_window
-        id="action_sempai_tax_report_pos_wizard"
-        name="Sempai Space POS Tax Report"
-        res_model="sempai.tax.report.pos.wizard"
-        view_mode="form"
-        target="new"/>
-
+<record id="action_sempai_tax_report_pos_wizard" model="ir.actions.act_window">
+    <field name="name">Sempai Space POS Tax Report</field>
+    <field name="res_model">sempai.tax.report.pos.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+</record>
 
     <!-- ============================================================ -->
     <!-- POS MENU -->
