@@ -2,7 +2,7 @@
 
 {
     'name': 'Sempai Tax Report for POS',
-    'version': '15.0.1.0.0',
+    'version': '17.0.1.0.0',
     'category': 'Reporting',
     'summary': 'Sempai tax PDF Reports for POS',
     'author': 'Sempai Space',
