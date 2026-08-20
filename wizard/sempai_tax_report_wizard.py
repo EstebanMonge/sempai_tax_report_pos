@@ -3,7 +3,7 @@
 import logging
 
 from odoo import models, fields
-
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -24,12 +24,18 @@ class SempaiTaxReportWizard(models.TransientModel):
 
     def action_print_report(self):
 
+        if self.date_start and self.date_end:
+            if self.date_start > self.date_end:
+                raise ValidationError(
+                    'Start Date cannot be greater than End Date.'
+                )
+
         pos_orders = self.env['pos.order'].search([
             ('company_id', '=', self.env.user.company_id.id),
             ('date_order', '>=', self.date_start),
             ('date_order', '<=', self.date_end),
             ('state', '=', 'done'),
-#            ('state_tributacion', '=', 'aceptado'),
+            ('state_tributacion', '=', 'aceptado'),
         ]).sorted(
             key=lambda order: (
                 order.partner_id.name or '',
