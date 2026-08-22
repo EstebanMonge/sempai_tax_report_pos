@@ -8,6 +8,8 @@
     'author': 'Sempai Space',
     'depends': [
         'base',
+        'cr_electronic_invoice_pos',
+        'accounting_pdf_reports',
     ],
     'data': [
         'views/sempai_tax_report_wizard.xml',

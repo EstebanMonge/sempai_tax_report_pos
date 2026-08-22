@@ -103,8 +103,12 @@ class SempaiTaxReport(models.AbstractModel):
                     # Calculate tax using the POS line values
                     # ------------------------------------------------
 
+                    price = line.price_unit * (
+                        1 - (line.discount or 0.0) / 100.0
+                    )
+
                     taxes = tax.compute_all(
-                        line.price_unit,
+                        price,
                         order.pricelist_id.currency_id,
                         line.qty,
                         product=line.product_id,
@@ -208,9 +212,7 @@ class SempaiTaxReport(models.AbstractModel):
 
             'docs': self.env[
                 'sempai.tax.report.pos.wizard'
-            ].browse(
-                data.get('context', {}).get('active_ids', [])
-            ),
+            ].browse(docids),
 
             'pos_orders': pos_orders,
 
