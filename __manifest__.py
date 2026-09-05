@@ -4,11 +4,12 @@
     'name': 'Sempai Tax Report for POS',
     'version': '17.0.1.0.0',
     'category': 'Reporting',
-    'summary': 'Sempai tax PDF Reports for POS',
+    'summary': 'Sempai tax PDF and Excel Reports for POS',
     'author': 'Sempai Space',
     'depends': [
         'base',
         'point_of_sale',
+        'report_xlsx',
     ],
     'data': [
         'views/sempai_tax_report_wizard.xml',
