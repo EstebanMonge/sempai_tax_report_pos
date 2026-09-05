@@ -30,13 +30,17 @@ class SempaiTaxReportWizard(models.TransientModel):
                     'Start Date cannot be greater than End Date.'
                 )
 
-        pos_orders = self.env['pos.order'].search([
+        domain = [
             ('company_id', '=', self.env.user.company_id.id),
             ('date_order', '>=', self.date_start),
             ('date_order', '<=', self.date_end),
             ('state', '=', 'done'),
-            ('state_tributacion', '=', 'aceptado'),
-        ]).sorted(
+        ]
+
+        if self.env.user.company_id.frm_ws_ambiente != 'disabled':
+            domain.append(('state_tributacion', '=', 'aceptado'))
+
+        pos_orders = self.env['pos.order'].search(domain).sorted(
             key=lambda order: (
                 order.partner_id.name or '',
                 order.date_order or '',
