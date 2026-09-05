@@ -29,13 +29,22 @@ class SempaiTaxReportWizard(models.TransientModel):
                 raise ValidationError(
                     'Start Date cannot be greater than End Date.'
                 )
-        pos_orders = self.env['pos.order'].search([
-            ('company_id', '=', self.env.user.company_id.id),
+        company = self.env.user.company_id
+
+        pos_domain = [
+            ('company_id', '=', company.id),
             ('date_order', '>=', self.date_start),
             ('date_order', '<=', self.date_end),
             ('state', '=', 'done'),
-            ('state_tributacion', '=', 'aceptado'),
-        ]).sorted(
+        ]
+
+        # Simplified regimen companies (electronic invoicing disabled)
+        # never populate state_tributacion, so it must not be used to
+        # filter their POS orders.
+        if company.frm_ws_ambiente != 'disabled':
+            pos_domain.append(('state_tributacion', '=', 'aceptado'))
+
+        pos_orders = self.env['pos.order'].search(pos_domain).sorted(
             key=lambda order: (
                 order.partner_id.name or '',
                 order.date_order or '',
@@ -50,11 +59,11 @@ class SempaiTaxReportWizard(models.TransientModel):
         )
         _logger.info(
             'Company ID: %s',
-            self.env.user.company_id.id,
+            company.id,
         )
         _logger.info(
             'Company: %s',
-            self.env.user.company_id.name,
+            company.name,
         )
         _logger.info(
             'Date range: %s -> %s',
