@@ -38,6 +38,8 @@
                                 <th>Invoice</th>
                                 <th>Date</th>
                                 <th>Partner</th>
+                                <th>Point of Sale</th>
+                                <th>Currency</th>
                                 <th>Subtotal</th>
                                 <th class="text-right">Taxes</th>
                                 <th class="text-right">Total</th>
@@ -65,6 +67,18 @@
                                     </td>
 
                                     <td>
+                                        <span
+                                            t-esc="order.config_id.name if order.config_id else ''"
+                                        />
+                                    </td>
+
+                                    <td>
+                                        <span
+                                            t-esc="order.currency_id.name if order.currency_id else ''"
+                                        />
+                                    </td>
+
+                                    <td>
                                        <span t-esc="'%.2f' % (order.amount_total - order.amount_tax)"/>
                                     </td>
 
@@ -80,7 +94,7 @@
 
                             </t>
 <tr>
-    <td colspan="3" class="text-right">
+    <td colspan="5" class="text-right">
         <strong>Total Sales</strong>
     </td>
 

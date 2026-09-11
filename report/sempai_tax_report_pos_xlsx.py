@@ -57,7 +57,9 @@ class SempaiTaxReportPosXlsx(models.AbstractModel):
         sheet.set_column('A:A', 22)
         sheet.set_column('B:B', 14)
         sheet.set_column('C:C', 30)
-        sheet.set_column('D:F', 16)
+        sheet.set_column('D:D', 20)
+        sheet.set_column('E:E', 12)
+        sheet.set_column('F:H', 16)
 
         row = 0
 
@@ -80,7 +82,10 @@ class SempaiTaxReportPosXlsx(models.AbstractModel):
         row += 1
 
         for col, header in enumerate(
-            ['Invoice', 'Date', 'Partner', 'Subtotal', 'Taxes', 'Total']
+            [
+                'Invoice', 'Date', 'Partner', 'Point of Sale', 'Currency',
+                'Subtotal', 'Taxes', 'Total',
+            ]
         ):
             sheet.write(row, col, header, header_format)
         row += 1
@@ -96,19 +101,29 @@ class SempaiTaxReportPosXlsx(models.AbstractModel):
             )
             sheet.write(
                 row, 3,
+                order.config_id.name if order.config_id else '',
+                text_format,
+            )
+            sheet.write(
+                row, 4,
+                order.currency_id.name if order.currency_id else '',
+                text_format,
+            )
+            sheet.write(
+                row, 5,
                 order.amount_total - order.amount_tax,
                 money_format,
             )
-            sheet.write(row, 4, order.amount_tax, money_format)
-            sheet.write(row, 5, order.amount_total, money_format)
+            sheet.write(row, 6, order.amount_tax, money_format)
+            sheet.write(row, 7, order.amount_total, money_format)
             row += 1
 
         sheet.merge_range(
-            row, 0, row, 2, 'Total Sales', total_label_format
+            row, 0, row, 4, 'Total Sales', total_label_format
         )
-        sheet.write(row, 3, values['sales_subtotal'], total_money_format)
-        sheet.write(row, 4, values['sales_tax'], total_money_format)
-        sheet.write(row, 5, values['sales_total'], total_money_format)
+        sheet.write(row, 5, values['sales_subtotal'], total_money_format)
+        sheet.write(row, 6, values['sales_tax'], total_money_format)
+        sheet.write(row, 7, values['sales_total'], total_money_format)
         row += 3
 
         # ============================================================
